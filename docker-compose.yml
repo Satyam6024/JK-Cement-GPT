@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  rag-agent:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./outputs:/app/outputs
+      - ./vector_db:/app/vector_db
+    environment:
+      - FLASK_ENV=production

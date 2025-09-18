@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI RAG Agent - Data Intelligence Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                AI RAG Agent
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#upload" class="nav-link active" data-tab="upload">Upload</a></li>
+                <li><a href="#query" class="nav-link" data-tab="query">Query</a></li>
+                <li><a href="#files" class="nav-link" data-tab="files">Files</a></li>
+                <li><a href="#insights" class="nav-link" data-tab="insights">Insights</a></li>
+            </ul>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span id="connectionStatus">Connected</span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main container">
+        <section class="hero">
+            <h1>Intelligent Data Analysis</h1>
+            <p>Upload your data, ask questions in natural language, and get AI-powered insights and visualizations instantly</p>
+        </section>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="upload">
+                <i class="fas fa-upload"></i> Upload Data
+            </button>
+            <button class="tab-btn" data-tab="query">
+                <i class="fas fa-search"></i> Query & Analyze
+            </button>
+            <button class="tab-btn" data-tab="files">
+                <i class="fas fa-folder"></i> Manage Files
+            </button>
+            <button class="tab-btn" data-tab="insights">
+                <i class="fas fa-chart-line"></i> Business Insights
+            </button>
+        </div>
+
+        <!-- Upload Tab -->
+        <div class="tab-content active" id="upload-tab">
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary-color);">
+                        <i class="fas fa-cloud-upload-alt"></i> Upload Your Data
+                    </h3>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-file-upload"></i>
+                        </div>
+                        <h4>Drag & Drop or Click to Upload</h4>
+                        <p>Supports CSV, XLSX, JSON, PDF, SQLite, Access DB, XML and more</p>
+                        <input type="file" id="fileInput" class="file-input" multiple accept=".csv,.xlsx,.xls,.json,.pdf,.docx,.db,.sqlite,.sqlite3,.accdb,.mdb,.xml,.dat">
+                    </div>
+                    <div class="progress-bar" id="progressBar" style="display: none;">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div id="uploadStatus"></div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary-color);">
+                        <i class="fas fa-info-circle"></i> Supported Formats
+                    </h3>
+                    <div class="grid grid-3" style="gap: 1rem;">
+                        <div class="format-item" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-table" style="color: var(--success-color);"></i>
+                            <span>CSV, XLSX</span>
+                        </div>
+                        <div class="format-item" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-file-alt" style="color: var(--success-color);"></i>
+                            <span>PDF, DOCX</span>
+                        </div>
+                        <div class="format-item" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-code" style="color: var(--success-color);"></i>
+                            <span>JSON, XML</span>
+                        </div>
+                        <div class="format-item" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-database" style="color: var(--success-color);"></i>
+                            <span>SQLite, Access</span>
+                        </div>
+                        <div class="format-item" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-file" style="color: var(--success-color);"></i>
+                            <span>DAT, FDB</span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(102, 126, 234, 0.1);">
+                        <h4 style="color: var(--text-primary); margin-bottom: 1rem;">Recent Uploads</h4>
+                        <div id="recentUploads" class="file-list" style="max-height: 200px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Query Tab -->
+        <div class="tab-content" id="query-tab">
+            <div class="card query-section">
+                <h3 style="margin-bottom: 1.5rem; color: var(--primary-color);">
+                    <i class="fas fa-brain"></i> Ask Your Data
+                </h3>
+                
+                <div class="analysis-type">
+                    <button class="analysis-option active" data-type="general">General Analysis</button>
+                    <button class="analysis-option" data-type="statistical">Statistical</button>
+                    <button class="analysis-option" data-type="trend">Trend Analysis</button>
+                    <button class="analysis-option" data-type="comparative">Comparative</button>
+                </div>
+
+                <div style="position: relative;">
+                    <textarea 
+                        id="queryInput" 
+                        class="query-input" 
+                        placeholder="Ask anything about your data... 
+Examples:
+• What are the sales trends over the last quarter?
+• Show me the correlation between price and demand
+• Which products have the highest profit margin?
+• Identify any anomalies in the customer data"
+                    ></textarea>
+                    <button class="query-submit" id="querySubmit">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+
+                <div id="queryResults"></div>
+            </div>
+        </div>
+
+        <!-- Files Tab -->
+        <div class="tab-content" id="files-tab">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary-color);">
+                        <i class="fas fa-folder-open"></i> Your Files
+                    </h3>
+                    <div style="display: flex; gap: 1rem;">
+                        <span id="fileCount" style="color: var(--text-secondary);">0 files</span>
+                        <button class="btn btn-secondary" onclick="refreshFiles()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div id="filesList" class="file-list"></div>
+            </div>
+        </div>
+
+        <!-- Insights Tab -->
+        <div class="tab-content" id="insights-tab">
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary-color);">
+                        <i class="fas fa-lightbulb"></i> Generate Insights
+                    </h3>
+                    <select id="insightFileSelect" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: var(--surface-bg); color: var(--text-primary); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px;">
+                        <option value="">Select a file for insights...</option>
+                    </select>
+                    <button class="btn" id="generateInsights">
+                        <i class="fas fa-magic"></i> Generate Insights
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary-color);">
+                        <i class="fas fa-chart-bar"></i> Quick Stats
+                    </h3>
+                    <div id="quickStats">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <span>Total Files:</span>
+                            <strong id="totalFiles">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <span>Documents Processed:</span>
+                            <strong id="totalDocs">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>System Status:</span>
+                            <strong style="color: var(--success-color);" id="systemStatus">Online</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="insightsResults"></div>
+        </div>
+    </main>
+
+    <script src="../static/script.js"></script>
+</body>
+</html>
