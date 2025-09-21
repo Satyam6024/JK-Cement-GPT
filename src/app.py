@@ -1,22 +1,29 @@
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template
 from flask_cors import CORS
-from api.routes import api_bp
+import os
+from src.config.config import Config
+from src.api.routes import api_bp
 
 def create_app():
-    app = Flask(__name__, 
-                static_folder='static',
-                template_folder='templates')
+    # Set template folder relative to src directory
+    template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+    app = Flask(__name__, template_folder=template_dir)
+    app.config.from_object(Config)
     
-    # Enable CORS for frontend
-    CORS(app, origins=['http://localhost:3000', 'http://127.0.0.1:5500'])
+    CORS(app, origins=['*'])
+    app.register_blueprint(api_bp, url_prefix='/api')
     
-    # Serve the frontend
+    # Create directories
+    os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
+    os.makedirs(Config.OUTPUT_FOLDER, exist_ok=True)
+    os.makedirs(Config.VECTOR_DB_PATH, exist_ok=True)
+    
     @app.route('/')
     def index():
         return render_template('index.html')
     
-    # Your existing API routes...
-    app.register_blueprint(api_bp, url_prefix='/api')
-    
-    
     return app
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run(debug=True, host='0.0.0.0', port=5000)
