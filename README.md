@@ -10,6 +10,9 @@ Enterprise-grade RAG agent for comprehensive data analysis, visualization, and b
 - RESTful API with real-time processing
 - Docker deployment ready
 
+## UI
+![alt text](https://github.com/Satyam6024/JK-Cement-GPT/blob/main/ai_rag_agent_ui1.0.png?raw=true)
+
 ## Quick Start
 
 ### Local Development
@@ -77,14 +80,38 @@ curl http://localhost:5000/api/insights/file-id-here
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
+
+## Rag-Agent Workflow
+![alt text](https://github.com/Satyam6024/JK-Cement-GPT/blob/main/workflow_rag_agent.jpg?raw=true)
+
+
+## RAG Sequence Diagram
+![alt text](https://github.com/Satyam6024/JK-Cement-GPT/blob/main/rag-pipeline-ingest-query-flow-b.jpg?raw=true)
+
+
 ## Environment Variables
 ```
 OPENAI_API_KEY=your_openai_api_key
+# Flask Configuration
 FLASK_ENV=development
+FLASK_DEBUG=True
+SECRET_KEY=your-secret-key-here
+
+# Paths
 UPLOAD_FOLDER=./uploads
 OUTPUT_FOLDER=./outputs
 VECTOR_DB_PATH=./vector_db
 MAX_FILE_SIZE=104857600
+
+# ChromaDB Configuration
+ANONYMIZED_TELEMETRY=False
+CHROMA_TELEMETRY_DISABLED=True
+# CHROMA_API_IMPL=rest
+# CHROMA_SERVER_HOST=localhost
+# CHROMA_SERVER_HTTP_PORT=8000
+
+# Logging
+LOG_LEVEL=INFO
 ```
 
 ## Business Intelligence Features
@@ -111,6 +138,7 @@ python -m pytest tests/
 python -m pytest tests/test_loaders.py
 python -m pytest tests/test_api.py
 ```
+
 
 ## Contributing
 1. Fork the repository
